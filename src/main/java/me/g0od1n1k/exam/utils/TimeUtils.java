@@ -1,9 +1,9 @@
-package me.g0od1n1k.exam.Semaphores;
+package me.g0od1n1k.exam.utils;
 
 public class TimeUtils {
 
-    public static int randomTalk(int avg) {
-        double spread = 0.2d * avg; // 20% от avg
+    public static int randomAvg(double percent, int avg) {
+        double spread = percent * avg; // 20% от avg
         double min = avg - spread;
         double max = avg + spread;
 
@@ -14,7 +14,7 @@ public class TimeUtils {
         return String.format("%02d:%02d", minute / 60, minute % 60);
     }
 
-    public static int generatePoissonRandomCalls(int averageCallsPerHour) {
+    public static int generatePoissonRandom(int averageCallsPerHour) {
         final double averageCallsPerMinute = averageCallsPerHour / 60.0;
         final double probabilityThreshold = Math.exp(-averageCallsPerMinute);
 

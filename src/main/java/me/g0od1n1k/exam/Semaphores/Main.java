@@ -1,5 +1,7 @@
 package me.g0od1n1k.exam.Semaphores;
 
+import me.g0od1n1k.exam.utils.TimeUtils;
+
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -8,33 +10,32 @@ public class Main {
     private static Main instance;
 
     /**
-     * Коммерчесая фирма занимается посредничесой деятельностью по продаже
-     * автомобилей и осуществляет часть переговоров по @value телефонным линиям
+     * The commercial firm is engaged in intermediary activities for the sale of cars
+     * and carries out part of the negotiations via @value telephone lines
      */
     private final int telephoneLines = 3;
     /**
-     * В среднем поступает @value звонков в час
+     * On average, we receive @value calls per hour
      */
     private final int callOnHours = 75;
     /**
-     * Среднее время предварительных переговоров справочного
-     * хара тера составляет @value мин
+     * The average time for preliminary negotiations of a reference nature is @value min
      */
     private final int conversationTimeOut = 5;
     /**
-     * Среднее время ожидания разговора составляет @value мин.
+     * The average waiting time for a conversation is @value min
      */
     private final float waitTimeOut = 0.5f;
     /**
-     * Вероятность отказа не превышала @value %
+     * The probability of failure did not exceed @value %
      */
-    private final int probabilityFailure = 20;
+    private final int scaleFactorTreadSleep = 20;
     /**
-     * Всего минут
+     * Just a few minutes
      */
     private final int totalMinutes = 75;
     /**
-     * Конкретное время в минутах
+     * The specific time in minutes
      */
     private int currentMinutes;
 
@@ -46,17 +47,17 @@ public class Main {
 
     public void start() throws InterruptedException {
         while(currentMinutes <= totalMinutes) {
-            int avgCalls = TimeUtils.generatePoissonRandomCalls(callOnHours);
+            int avgCalls = TimeUtils.generatePoissonRandom(callOnHours);
             for(int i = 0; i < avgCalls; i++) {
                 Call call = new Call(totalCalls.incrementAndGet(), currentMinutes, conversationTimeOut);
                 call.start();
             }
-            Thread.sleep(probabilityFailure);
+            Thread.sleep(scaleFactorTreadSleep);
             currentMinutes++;
         }
 
         while (totalCalls.get() > totalLeftCalls.get() + totalServedCalls.get()) {
-            Thread.sleep(probabilityFailure);
+            Thread.sleep(scaleFactorTreadSleep);
         }
 
         display();
@@ -106,8 +107,8 @@ public class Main {
         return currentMinutes;
     }
 
-    public int getProbabilityFailure() {
-        return probabilityFailure;
+    public int getScaleFactorTreadSleep() {
+        return scaleFactorTreadSleep;
     }
 
     public float getWaitTimeOut() {

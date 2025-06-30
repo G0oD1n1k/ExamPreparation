@@ -1,5 +1,7 @@
 package me.g0od1n1k.exam.Semaphores;
 
+import me.g0od1n1k.exam.utils.TimeUtils;
+
 import java.util.concurrent.TimeUnit;
 
 public class Call extends Thread {
@@ -12,7 +14,7 @@ public class Call extends Thread {
     public Call(int id, int arrival, int duration) {
         this.id = id;
         this.arrival = arrival;
-        this.duration = TimeUtils.randomTalk(duration);
+        this.duration = TimeUtils.randomAvg(0.2d, duration);
     }
 
     @Override
@@ -21,12 +23,12 @@ public class Call extends Thread {
 
         final Main main = Main.getInstance();
         try {
-            if (main.getPhoneLines().tryAcquire((int) (main.getWaitTimeOut() * main.getProbabilityFailure()), timeUnit)) {
+            if (main.getPhoneLines().tryAcquire((int) (main.getWaitTimeOut() * main.getScaleFactorTreadSleep()), timeUnit)) {
                 int startCurrentMinutes = main.getCurrentMinutes();
 
                 System.out.printf("LOG:\t[IN_A_CALL]\t[time: %s]\t[id: %d] | [duration: %d min]%n", TimeUtils.formatTimeOnMinutes(startCurrentMinutes), id, duration);
 
-                Thread.sleep((long) duration * main.getProbabilityFailure());
+                Thread.sleep((long) duration * main.getScaleFactorTreadSleep());
 
                 System.out.printf("LOG:\t[COMPLETED_A_CALL]\t[time: %s]\t[id: %d]%n", TimeUtils.formatTimeOnMinutes(startCurrentMinutes), id);
 
