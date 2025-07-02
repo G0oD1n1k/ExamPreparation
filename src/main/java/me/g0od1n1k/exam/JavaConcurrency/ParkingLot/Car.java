@@ -1,4 +1,4 @@
-package me.g0od1n1k.exam.BlockingQueues;
+package me.g0od1n1k.exam.JavaConcurrency.ParkingLot;
 
 import me.g0od1n1k.exam.utils.TimeUtils;
 
